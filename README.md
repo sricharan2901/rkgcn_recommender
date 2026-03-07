@@ -274,6 +274,161 @@ A **57.5%/42.5% split** — reasonably balanced for binary classification.
 
 ---
 
+### Book-Crossing
+
+#### Basic Statistics
+
+| Metric | Value |
+|---|---|
+| Total ratings | 1,149,780 |
+| Unique users (ratings) | 105,283 |
+| Unique books (ratings) | 340,556 |
+| Total books in DB | 271,379 |
+| Total users in DB | 278,859 |
+| Density | 0.003% |
+| **Sparsity** | **99.997%** |
+| Avg ratings/user | 10.9 |
+| Avg ratings/book | 3.4 |
+
+This is an **extremely sparse** dataset — users rate only ~11 books on average, and most books have just 1 rating.
+
+#### Explicit vs Implicit Ratings
+
+| Type | Count | Percentage |
+|---|---|---|
+| Explicit (rating > 0) | 433,671 | 37.7% |
+| Implicit (rating = 0) | 716,109 | 62.3% |
+
+A rating of 0 indicates the user interacted with the book (e.g., bought it) but did not provide an explicit rating.
+
+![Explicit vs Implicit](eda_outputs/Book-Crossing/explicit_vs_implicit.png)
+
+#### Explicit Rating Distribution (1–10)
+
+| Rating | Count | Percentage |
+|---|---|---|
+| 1 | 1,770 | 0.4% |
+| 2 | 2,759 | 0.6% |
+| 3 | 5,996 | 1.4% |
+| 4 | 8,904 | 2.1% |
+| 5 | 50,974 | 11.8% |
+| 6 | 36,924 | 8.5% |
+| 7 | 76,457 | 17.6% |
+| 8 | 103,736 | 23.9% |
+| 9 | 67,541 | 15.6% |
+| 10 | 78,610 | 18.1% |
+
+Mean rating: **7.60**, Median: **8.0** — heavily **left-skewed**, users predominantly give high ratings (8 is the most common).
+
+![Rating Distribution](eda_outputs/Book-Crossing/rating_distribution.png)
+
+#### Ratings per User
+
+| Metric | Value |
+|---|---|
+| Min | 1 |
+| Max | 13,602 |
+| Mean | 10.9 |
+| Median | 1.0 |
+| Users with ≥ 5 ratings | 22,816 |
+
+**Median of 1** means over half of users have only a single interaction — extreme long-tail distribution. Only 22,816 users (21.7%) have ≥ 5 ratings.
+
+![Ratings per User](eda_outputs/Book-Crossing/ratings_per_user.png)
+
+#### Ratings per Book
+
+| Metric | Value |
+|---|---|
+| Min | 1 |
+| Max | 2,502 |
+| Mean | 3.4 |
+| Median | 1.0 |
+| Books with ≥ 5 ratings | 43,765 |
+
+Similar long-tail pattern — most books have only 1 rating. Only 43,765 books (12.9%) have 5+ ratings.
+
+![Ratings per Book](eda_outputs/Book-Crossing/ratings_per_book.png)
+
+#### Top 15 Authors (by number of books)
+
+| Author | Books | Author | Books |
+|---|---|---|---|
+| Agatha Christie | 632 | Charles Dickens | 302 |
+| William Shakespeare | 567 | R. L. Stine | 282 |
+| Stephen King | 524 | Mark Twain | 231 |
+| Ann M. Martin | 423 | Jane Austen | 223 |
+| Carolyn Keene | 373 | Terry Pratchett | 220 |
+| Francine Pascal | 373 | | |
+| Isaac Asimov | 330 | | |
+| Nora Roberts | 315 | | |
+| Barbara Cartland | 307 | | |
+
+A mix of **classic literature** (Shakespeare, Dickens, Austen) and **prolific popular fiction** (King, Christie, Roberts).
+
+![Top Authors](eda_outputs/Book-Crossing/top_authors.png)
+
+#### Top 15 Publishers
+
+| Publisher | Books | Publisher | Books |
+|---|---|---|---|
+| Harlequin | 7,536 | Warner Books | 2,727 |
+| Silhouette | 4,220 | Penguin USA | 2,717 |
+| Pocket | 3,905 | Harpercollins | 2,526 |
+| Ballantine Books | 3,783 | Fawcett Books | 2,258 |
+| Bantam Books | 3,647 | Signet Book | 2,070 |
+| Scholastic | 3,160 | Random House Inc | 2,045 |
+| Simon & Schuster | 2,928 | | |
+| Penguin Books | 2,844 | | |
+| Berkley Publishing Group | 2,771 | | |
+
+**Harlequin** leads by a wide margin (romance imprint), followed by mass-market paperback publishers.
+
+![Top Publishers](eda_outputs/Book-Crossing/top_publishers.png)
+
+#### User Age Distribution
+
+| Metric | Value |
+|---|---|
+| Users with valid age | 166,661 / 278,859 (59.8%) |
+| Age range | 1 – 119 |
+| Mean age | 34.8 |
+| Median age | 32.0 |
+
+The user base skews **young adult** (median 32), with a fairly normal distribution centered around the late 20s to early 30s.
+
+![User Age Distribution](eda_outputs/Book-Crossing/user_age_distribution.png)
+
+#### Publication Year
+
+| Decade | Books |
+|---|---|
+| 1950s | 623 |
+| 1960s | 1,773 |
+| 1970s | 12,774 |
+| 1980s | 52,780 |
+| 1990s | 126,024 |
+| 2000s | 72,471 |
+
+The vast majority of books were published in the **1990s** (47% of books with valid years). This aligns with the dataset collection period (~2004).
+
+![Publication Year](eda_outputs/Book-Crossing/publication_year.png)
+
+#### Implicit Feedback Split (RKGCN)
+
+For RKGCN, any explicit rating > 0 is treated as **positive**:
+
+| Class | Count | Percentage |
+|---|---|---|
+| Positive (> 0) | 433,671 | 37.7% |
+| Implicit (= 0) | 716,109 | 62.3% |
+
+A **37.7%/62.3% split** — imbalanced toward implicit/negative, which is typical for real-world recommendation datasets.
+
+![Positive vs Negative Split](eda_outputs/Book-Crossing/positive_negative_split.png)
+
+---
+
 ## Model Architecture
 
 ```
