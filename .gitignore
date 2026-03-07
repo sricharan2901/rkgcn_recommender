@@ -1,0 +1,45 @@
+# Virtual environment
+DWMenv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Generated data (too large for git)
+datasets/MovieLens-1M/ratings_final.txt
+datasets/MovieLens-1M/kg_final.txt
+datasets/MovieLens-1M/metadata.txt
+datasets/Book-Crossing/ratings_final.txt
+datasets/Book-Crossing/kg_final.txt
+datasets/Book-Crossing/metadata.txt
+
+# Raw datasets (too large for git — download separately)
+datasets/MovieLens-1M/ratings.dat
+datasets/MovieLens-1M/movies.dat
+datasets/MovieLens-1M/users.dat
+datasets/MovieLens-1M/README
+datasets/Book-Crossing/Ratings.csv
+datasets/Book-Crossing/Books.csv
+datasets/Book-Crossing/Users.csv
+
+# Model weights
+*.h5
+best_model_weights.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.log
