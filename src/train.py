@@ -144,7 +144,7 @@ def train(model, data, args):
             best_val_auc = val_auc
             best_epoch = epoch
             # Save best weights
-            model.save_weights("best_model_weights.h5")
+            model.save_weights("best_model.weights.h5")
 
         # Print epoch summary
         print(
@@ -159,7 +159,7 @@ def train(model, data, args):
 
     # Restore best weights
     try:
-        model.load_weights("best_model_weights.h5")
+        model.load_weights("best_model.weights.h5")
         print("Best model weights restored.")
     except Exception:
         print("Warning: Could not restore best weights.")

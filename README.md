@@ -272,6 +272,24 @@ A **57.5%/42.5% split** — reasonably balanced for binary classification.
 
 ![Positive vs Negative Split](eda_outputs/MovieLens-1M/positive_negative_split.png)
 
+#### Training Results (RKGCN)
+
+After training the model for 25 epochs using the paper defaults, the final evaluation on the test set yielded the following results:
+
+- **Test AUC**: 0.9054
+- **Test Accuracy**: 82.41%
+
+Below are the learning curves generated during training:
+
+**Training Loss**  
+![Training Loss](outputs/movielens-1m/training_loss.png)
+
+**AUC Curve (Train vs Val)**  
+![AUC Curve](outputs/movielens-1m/auc_curve.png)
+
+**Accuracy Curve (Train vs Val)**  
+![Accuracy Curve](outputs/movielens-1m/accuracy_curve.png)
+
 ---
 
 ### Book-Crossing

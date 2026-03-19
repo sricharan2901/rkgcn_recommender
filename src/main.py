@@ -31,6 +31,8 @@ import argparse
 import os
 import sys
 import numpy as np
+import shutil
+import matplotlib.pyplot as plt
 
 
 def parse_args():
@@ -207,10 +209,53 @@ def main():
     all_auc = []
     all_acc = []
 
+    output_dir = f"outputs/{args.dataset}-1m" if args.dataset == 'movie' else f"outputs/{args.dataset}-crossing"
+    os.makedirs(output_dir, exist_ok=True)
+
     for run_id in range(1, args.n_runs + 1):
         test_auc, test_acc, history = run_single(args, run_id)
         all_auc.append(test_auc)
         all_acc.append(test_acc)
+
+        if run_id == 1:
+            # Save plots for the first run
+            epochs = range(1, len(history["train_loss"]) + 1)
+            
+            # Loss plot
+            plt.figure(figsize=(8, 6))
+            plt.plot(epochs, history["train_loss"], label="Train Loss")
+            plt.title("Training Loss")
+            plt.xlabel("Epoch")
+            plt.ylabel("Loss")
+            plt.legend()
+            plt.savefig(os.path.join(output_dir, "training_loss.png"))
+            plt.close()
+            
+            # AUC plot
+            plt.figure(figsize=(8, 6))
+            plt.plot(epochs, history["train_auc"], label="Train AUC")
+            plt.plot(epochs, history["val_auc"], label="Val AUC")
+            plt.title("AUC over Epochs")
+            plt.xlabel("Epoch")
+            plt.ylabel("AUC")
+            plt.legend()
+            plt.savefig(os.path.join(output_dir, "auc_curve.png"))
+            plt.close()
+            
+            # ACC plot
+            plt.figure(figsize=(8, 6))
+            plt.plot(epochs, history["train_acc"], label="Train ACC")
+            plt.plot(epochs, history["val_acc"], label="Val ACC")
+            plt.title("Accuracy over Epochs")
+            plt.xlabel("Epoch")
+            plt.ylabel("Accuracy")
+            plt.legend()
+            plt.savefig(os.path.join(output_dir, "accuracy_curve.png"))
+            plt.close()
+
+    # Move the best model weights to the output directory
+    if os.path.exists("best_model.weights.h5"):
+        shutil.copy("best_model.weights.h5", os.path.join(output_dir, "best_model.weights.h5"))
 
     # Report final results
     print(f"\n{'='*60}")
@@ -219,6 +264,10 @@ def main():
     print(f"  Test AUC: {np.mean(all_auc):.4f} ± {np.std(all_auc):.4f}")
     print(f"  Test ACC: {np.mean(all_acc):.4f} ± {np.std(all_acc):.4f}")
     print(f"{'='*60}\n")
+    
+    with open(os.path.join(output_dir, "metrics.txt"), "w") as f:
+        f.write(f"Test AUC: {np.mean(all_auc):.4f} ± {np.std(all_auc):.4f}\n")
+        f.write(f"Test ACC: {np.mean(all_acc):.4f} ± {np.std(all_acc):.4f}\n")
 
 
 if __name__ == "__main__":
