@@ -445,6 +445,24 @@ A **37.7%/62.3% split** — imbalanced toward implicit/negative, which is typica
 
 ![Positive vs Negative Split](eda_outputs/Book-Crossing/positive_negative_split.png)
 
+#### Training Results (RKGCN)
+
+After training the model for 10 epochs using the paper defaults, the final evaluation on the test set yielded the following results:
+
+- **Test AUC**: 0.7037
+- **Test Accuracy**: 66.68%
+
+Below are the learning curves generated during training:
+
+**Training Loss**  
+![Training Loss](outputs/book-crossing/training_loss.png)
+
+**AUC Curve (Train vs Val)**  
+![AUC Curve](outputs/book-crossing/auc_curve.png)
+
+**Accuracy Curve (Train vs Val)**  
+![Accuracy Curve](outputs/book-crossing/accuracy_curve.png)
+
 ---
 
 ## Model Architecture
