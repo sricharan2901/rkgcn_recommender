@@ -58,12 +58,21 @@ def preprocess_movie(data_dir):
 
     neg_rows = []
     np.random.seed(42)
+    all_items_array = np.array(list(all_items))
     for uid, pos_items in user_pos.items():
-        neg_candidates = list(all_items - pos_items)
-        n_neg = min(len(pos_items), len(neg_candidates))
+        n_neg = min(len(pos_items), len(all_items_array) - len(pos_items))
         if n_neg == 0:
             continue
-        sampled = np.random.choice(neg_candidates, size=n_neg, replace=False)
+        
+        sampled = set()
+        while len(sampled) < n_neg:
+            cands = np.random.choice(all_items_array, size=n_neg * 2, replace=True)
+            for cand in cands:
+                if cand not in pos_items:
+                    sampled.add(cand)
+                    if len(sampled) == n_neg:
+                        break
+                        
         for iid in sampled:
             neg_rows.append({"user_id": uid, "item_id": iid, "label": 0})
 
@@ -158,12 +167,21 @@ def preprocess_book(data_dir):
 
     neg_rows = []
     np.random.seed(42)
+    all_items_array = np.array(list(all_items))
     for uid, pos_items in user_pos.items():
-        neg_candidates = list(all_items - pos_items)
-        n_neg = min(len(pos_items), len(neg_candidates))
+        n_neg = min(len(pos_items), len(all_items_array) - len(pos_items))
         if n_neg == 0:
             continue
-        sampled = np.random.choice(neg_candidates, size=n_neg, replace=False)
+        
+        sampled = set()
+        while len(sampled) < n_neg:
+            cands = np.random.choice(all_items_array, size=n_neg * 2, replace=True)
+            for cand in cands:
+                if cand not in pos_items:
+                    sampled.add(cand)
+                    if len(sampled) == n_neg:
+                        break
+                        
         for iid in sampled:
             neg_rows.append({"user_id": uid, "item_id": iid, "label": 0})
 
