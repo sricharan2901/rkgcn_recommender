@@ -85,15 +85,16 @@ class RKGCN(tf.keras.Model):
         self.time_decay_lambda = self.add_weight(
             name="time_decay_lambda",
             shape=(),
-            initializer=tf.keras.initializers.Constant(1.0),
+            initializer=tf.keras.initializers.Constant(0.0),
             trainable=True,
         )
 
-        # ---- TS-RKGCN Session Gate ----
-        self.gate_dense = tf.keras.layers.Dense(
-            1,
-            activation="sigmoid",
-            name="session_gate_dense",
+        # ---- TS-RKGCN Session Gate (2-Layer MLP) ----
+        self.gate_dense1 = tf.keras.layers.Dense(
+            dim, activation="relu", name="session_gate_hidden"
+        )
+        self.gate_dense2 = tf.keras.layers.Dense(
+            1, activation="sigmoid", name="session_gate_out"
         )
 
         # ---- Entity Enhancement / GCN (Eq. 10) ----
@@ -162,7 +163,8 @@ class RKGCN(tf.keras.Model):
         
         # Gating Mechanism (alpha fusion)
         concat_emb = tf.concat([user_emb_short, user_emb_long, item_embeddings], axis=1) # (B, dim*3)
-        alpha = self.gate_dense(concat_emb) # (B, 1)
+        hidden = self.gate_dense1(concat_emb)
+        alpha = self.gate_dense2(hidden) # (B, 1)
         
         user_emb = alpha * user_emb_short + (1.0 - alpha) * user_emb_long
 

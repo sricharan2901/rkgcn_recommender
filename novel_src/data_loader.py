@@ -84,7 +84,7 @@ def load_kg(data_dir):
     return kg_dict, int(n_entities), int(n_relations)
 
 
-def construct_preference_sets(train_data, kg_dict, n_hop, n_memory, session_split_ratio=0.2):
+def construct_preference_sets(train_data, kg_dict, n_hop, n_memory, session_split_ratio=0.1):
     """
     Construct user preference (ripple) sets for each user.
     Splits into long-term and short-term (session) histories.

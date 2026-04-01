@@ -481,6 +481,26 @@ Below are the learning curves generated during training:
 **Accuracy Curve (Train vs Val)**  
 ![Accuracy Curve](outputs/book-crossing/accuracy_curve.png)
 
+#### TS-RKGCN (Novel Architecture) Training Results
+
+By utilizing **Dynamic Session-Based Aggregation** gating and an implicitly sorted short-term history array of 10% bounds, the novel enhanced model successfully defeated extreme sparsity limitations. After training for 10 epochs, the evaluation yielded:
+
+- **Test AUC**: 0.7350
+- **Test Accuracy**: 69.30%
+
+This represents a massive absolute improvement (+0.03 AUC) over the baseline RKGCN architecture's $0.7037$ ceiling.
+
+Below are the learning curves generated during the TS-RKGCN training:
+
+**Training Loss**  
+![Training Loss](outputs/novel-book-crossing/training_loss.png)
+
+**AUC Curve (Train vs Val)**  
+![AUC Curve](outputs/novel-book-crossing/auc_curve.png)
+
+**Accuracy Curve (Train vs Val)**  
+![Accuracy Curve](outputs/novel-book-crossing/accuracy_curve.png)
+
 ---
 
 ## Model Architecture

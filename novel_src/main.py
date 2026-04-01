@@ -14,13 +14,13 @@ Usage:
 Full list of arguments:
   --dataset:     'movie' (MovieLens-1M) or 'book' (Book-Crossing)
   --preprocess:  Run preprocessing only
-  --dim:         Embedding dimension d (default: 8)
+  --dim:         Embedding dimension d (default: 16)
   --n_hop:       Number of preference propagation hops H (default: 2)
   --n_memory:    Preference set size per hop N_p (default: 32)
   --n_neighbor:  Neighbor set size for GCN N_e (default: 16)
   --kge_weight:  Weight for KGE loss (default: 0.01)
-  --l2:          L2 regularization weight (default: 1e-7)
-  --lr:          Learning rate (default: 0.02)
+  --l2:          L2 regularization weight (default: 1e-5)
+  --lr:          Learning rate (default: 0.01)
   --batch_size:  Training batch size (default: 1024)
   --n_epoch:     Number of training epochs (default: 10)
   --gcn_iter:    Number of GCN aggregation iterations (default: 1)
@@ -63,7 +63,7 @@ def parse_args():
     )
 
     # Model hyperparameters
-    parser.add_argument("--dim", type=int, default=8, help="Embedding dimension d")
+    parser.add_argument("--dim", type=int, default=16, help="Embedding dimension d")
     parser.add_argument(
         "--n_hop", type=int, default=2, help="Number of preference propagation hops H"
     )
@@ -77,9 +77,9 @@ def parse_args():
         "--kge_weight", type=float, default=0.01, help="Weight for KGE loss"
     )
     parser.add_argument(
-        "--l2", type=float, default=1e-7, help="L2 regularization weight"
+        "--l2", type=float, default=1e-5, help="L2 regularization weight"
     )
-    parser.add_argument("--lr", type=float, default=0.02, help="Learning rate")
+    parser.add_argument("--lr", type=float, default=0.01, help="Learning rate")
     parser.add_argument(
         "--batch_size", type=int, default=1024, help="Training batch size"
     )
