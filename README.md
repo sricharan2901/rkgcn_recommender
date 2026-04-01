@@ -290,6 +290,24 @@ Below are the learning curves generated during training:
 **Accuracy Curve (Train vs Val)**  
 ![Accuracy Curve](outputs/movielens-1m/accuracy_curve.png)
 
+#### TS-RKGCN (Novel Architecture) Training Results
+
+We integrated **Time-Sensitive Ripple Expansion** and **Dynamic Session-Based Aggregation** to build TS-RKGCN. After training the novel model for 25 epochs on MovieLens-1M, the final evaluation on the test set yielded:
+
+- **Test AUC**: 0.8988
+- **Test Accuracy**: 82.02%
+
+Below are the learning curves generated during the TS-RKGCN training:
+
+**Training Loss**  
+![Training Loss](outputs/novel-movie-1m/training_loss.png)
+
+**AUC Curve (Train vs Val)**  
+![AUC Curve](outputs/novel-movie-1m/auc_curve.png)
+
+**Accuracy Curve (Train vs Val)**  
+![Accuracy Curve](outputs/novel-movie-1m/accuracy_curve.png)
+
 ---
 
 ### Book-Crossing
