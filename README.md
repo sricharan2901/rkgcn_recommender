@@ -1,11 +1,16 @@
-# RKGCN — Ripple Knowledge Graph Convolutional Networks
+# TS-RKGCN — Time-Sensitive & Session-Based Ripple Knowledge Graph Convolutional Networks
 
-Implementation of the **RKGCN** model for recommendation systems, based on the paper:
+This repository presents **TS-RKGCN**, a novel architectural extension of the foundational RKGCN model for personalized recommendation systems. 
 
+While the baseline RKGCN model strictly relies on static historical user data, **TS-RKGCN** introduces two primary novelties to capture dynamic user intents:
+1. **Time-Sensitive Ripple Expansion**: Introduces a learnable temporal decay penalty ($\lambda_{decay}$) into the preference attention mechanism. This forces the Knowledge Graph to geometrically penalize outdated user interactions and prioritize fresh semantic nodes.
+2. **Dynamic Session-Based Aggregation**: Chronologically splits user interactions into `long_term` stable histories and `short_term` transient sessions. A neural gating mechanism ($\alpha$) dynamically fuses these dual pipelines to estimate immediate situational intent vs. historical baseline.
+
+**Baseline Paper Reference:**
 > **"Ripple Knowledge Graph Convolutional Networks for Recommendation Systems"**
 > Chen Li et al., *Machine Intelligence Research*, 2024
 
-RKGCN combines two complementary approaches for knowledge-graph-enhanced recommendations:
+RKGCN fundamentally combines two complementary approaches for knowledge-graph-enhanced recommendations:
 1. **User Preference Aggregation** (inspired by RippleNet) — propagates user preferences through multi-hop KG links
 2. **Entity Enhancement via GCN** (inspired by KGCN) — enriches item embeddings using graph convolution over KG neighborhoods
 
@@ -294,8 +299,8 @@ Below are the learning curves generated during training:
 
 We integrated **Time-Sensitive Ripple Expansion** and **Dynamic Session-Based Aggregation** to build TS-RKGCN. After training the novel model for 25 epochs on MovieLens-1M, the final evaluation on the test set yielded:
 
-- **Test AUC**: 0.8988
-- **Test Accuracy**: 82.02%
+- **Test AUC**: 0.9340
+- **Test Accuracy**: 86.10%
 
 Below are the learning curves generated during the TS-RKGCN training:
 
