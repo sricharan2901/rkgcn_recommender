@@ -508,17 +508,62 @@ Below are the learning curves generated during the TS-RKGCN training:
 
 ---
 
-## Model Architecture
+## Model Architecture (TS-RKGCN)
 
-```
-User ──► Ripple Set (H hops) ──► Attention + Aggregation ──► User Embedding (o_u)
-                                                                    │
-Item ──► KG Neighbors ──► GCN (user-aware weights) ──► Enhanced Item Embedding (e_v')
-                                                                    │
-                                                    Prediction: σ(o_u · e_v')
+```mermaid
+graph TD
+    classDef user fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b
+    classDef item fill:#f3e5f5,stroke:#0288d1,stroke-width:2px,color:#01579b
+    classDef kg fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#e65100
+    classDef gate fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#1b5e20
+    classDef loss fill:#ffebee,stroke:#d32f2f,stroke-width:2px,color:#b71c1c
+
+    subgraph "Time-Sensitive Ripple Expansion"
+        U([👤 User Interaction History]) --> Split{chronological split}
+        Split -->|Top 10%| S_Short[🕒 Short-Term Session Seeds]:::user
+        Split -->|Bottom 90%| S_Long[📚 Long-Term Stable Seeds]:::user
+        
+        KG[(🕸️ External Knowledge Graph)]:::kg
+        
+        S_Short -->|Hops| R_Short(🌊 Short-Term Ripples)
+        S_Long -->|Hops| R_Long(🌊 Long-Term Ripples)
+        
+        KG -.->|Decay Penalty λ| R_Short
+        KG -.->|Decay Penalty λ| R_Long
+        
+        R_Short -->|Attention Aggregate| O_Short[o_u short]:::user
+        R_Long -->|Attention Aggregate| O_Long[o_u long]:::user
+    end
+
+    subgraph "Entity Enhancement (GCN)"
+        V([🎬 Candidate Item v]) --> KG_V{Neighborhood Sampling}
+        KG_V --> GCN(🧠 Graph Convolution)
+        GCN --> E_V[e_v enhanced]:::item
+    end
+
+    subgraph "Dynamic Session-Based MLP Aggregation"
+        O_Short --> Concat[Concat ||]
+        O_Long --> Concat
+        E_V --> Concat
+        
+        Concat --> MLP(⚙️ 2-Layer MLP Gate)
+        MLP --> Alpha((Gate α)):::gate
+        
+        Alpha -.->|Weight| O_Short
+        Alpha -.->|1 - Weight| O_Long
+        
+        O_Short --> Fuse((+))
+        O_Long --> Fuse
+        Fuse --> O_U[Final User Intent o_u]:::user
+    end
+    
+    O_U --> DotProduct((× Dot Product))
+    E_V --> DotProduct
+    DotProduct --> Sigmoid(σ Sigmoid)
+    Sigmoid --> Pred[CTR Probability y_uv]:::loss
 ```
 
-**Loss Function**: L = L_rec (cross-entropy) + λ₁ · L_KGE + λ₂ · L_reg
+**Loss Function**: `L = L_rec (cross-entropy) + λ₁ · L_KGE + λ₂ · L_reg`
 
 ---
 
