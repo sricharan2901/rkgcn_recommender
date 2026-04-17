@@ -542,7 +542,7 @@ graph TD
     end
 
     subgraph "Dynamic Session-Based MLP Aggregation"
-        O_Short --> Concat[Concat ||]
+        O_Short --> Concat["Concat ||"]
         O_Long --> Concat
         E_V --> Concat
         
