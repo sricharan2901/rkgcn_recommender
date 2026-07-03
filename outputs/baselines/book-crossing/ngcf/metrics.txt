@@ -1,0 +1,4 @@
+Test AUC: 0.6327
+Test ACC: 0.5968
+Best Epoch: 5
+Best Val AUC: 0.6323
